@@ -7,51 +7,47 @@
 4) new_render - naujo ėjimo atvaizdavimas
 """
 
-tinkliukas = ["0", "1", "2", "3", "4", "5", "6", "7", "8","9"]
-zaidimo_eiga = ["5","3"]
-seka =  ["X", "O", "X", "O", "X", "O", "X", "O", "X"]
-# render = [["7","8","9"],["4","5","6"],["1","2","3"]]
-render = [["7","8","9"],["4","X","6"],["1","2","O"]]
-render_1 = ["7","8","9","4","5","6","1","2","3"]
+zaidimo_eiga = []
+
+render = {0: "-", 1: "-", 2: "-", 3: "-", 4: "-", 5: "-", 6: "-", 7: "-", 8: "-"}
+
 
 def klavisas(key):
-    skaiciu_isdestymas = {"7":0,"8":1,"9":2,"4":3,"5":4,"6":5,"1":6,"2":7,"3":8}
+    skaiciu_isdestymas = {"7": 0, "8": 1, "9": 2, "4": 3, "5": 4, "6": 5, "1": 6, "2": 7, "3": 8}
     return skaiciu_isdestymas[key]
 
-zaidimo_eiga.append(klavisas("7"))
+def render_update(ejimas):
+    return render.update({ejimas: "X"})
+
+
+ejimas = klavisas(input("ėjimas: "))
+render_update(ejimas)
+zaidimo_eiga.append(ejimas)
+
 print(zaidimo_eiga)
-tinkliukas_2 = {"0":"-","1":"-","2":"-","3":"-","4":"-","5":"-","6":"-","7":"-","8":"-"}
 
-
-
-new_render = []
-
-for x,n in enumerate(render):
-    print(n)
-    for m in n:
-        # print(m,x)
-        if m == "X":
-            new_render.append("X")
-        elif m == "O":
-            new_render.append("O")
-        else:
-            new_render.append("-")
-
-print('--------')
-print(new_render)
-print('--------')
 eilute1 = []
 eilute2 = []
 eilute3 = []
-
-for x,n in enumerate(new_render):
+for x, n in enumerate(render):
     if x > 5:
-        eilute3.append(n)
+        if n == ejimas:
+            eilute3.append("X")
+        else:
+            eilute3.append(render[n])
     elif x > 2:
-        eilute2.append(n)
+        if n == ejimas:
+            eilute2.append("X")
+        else:
+            eilute2.append(render[n])
     elif x >= 0:
-        eilute1.append(n)
+        if n == ejimas:
+            eilute1.append("X")
+        else:
+            eilute1.append(render[n])
 
 print(eilute1)
 print(eilute2)
 print(eilute3)
+print(render)
+
