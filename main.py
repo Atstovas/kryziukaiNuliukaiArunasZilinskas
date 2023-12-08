@@ -79,8 +79,8 @@ def patikra(zaidimo_eiga):
     patikra_o = [0]
     for n in laime:
         for m in n:
-            for x in zaidimo_eiga:
-                if x == m and x % 2 == 0:
+            for i, x in enumerate(zaidimo_eiga):
+                if x == m and i % 2 != 0:
                     patikra_o.append(1)
                 elif x == m:
                     patikra_x.append(1)
