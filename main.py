@@ -14,7 +14,7 @@ zaidimo_eiga = []
 
 
 def iseiti():
-    print("klaida")
+    print("Pabaiga")
     sys.exit()
 
 def klavisas(key):
@@ -105,6 +105,8 @@ while True:
     patikra(zaidimo_eiga)
     print(zaidimo_eiga)
     ekranas()
+    if len(zaidimo_eiga) == 9:
+        iseiti()
     # print(vaizdas[0])
     # print(vaizdas[1])
     # print(vaizdas[2])
