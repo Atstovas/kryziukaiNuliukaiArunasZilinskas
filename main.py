@@ -8,8 +8,10 @@
 """
 import sys
 
-zaidimo_eiga = []
 render = {0: "-", 1: "-", 2: "-", 3: "-", 4: "-", 5: "-", 6: "-", 7: "-", 8: "-"}
+laime = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
+zaidimo_eiga = []
+
 
 def iseiti():
     print("klaida")
@@ -65,30 +67,47 @@ def vaizdavimas():
                 eilute1.append(render[n])
     return eilute1, eilute2, eilute3
 
+def ekranas():
+    for n in range(3):
+        print(vaizdas[n])
+    # print(vaizdas[0])
+    # print(vaizdas[1])
+    # print(vaizdas[2])
+
 def patikra(zaidimo_eiga):
-    if zaidimo_eiga[0] == 0 and zaidimo_eiga[2] == 1 and zaidimo_eiga[4] == 2:
-        print("laimėjai")
-        print(zaidimo_eiga)
-        zaidimo_eiga = []
-    if zaidimo_eiga[4] == 0 and zaidimo_eiga[5] == 1 and zaidimo_eiga[6] == 2:
-        print("laimėjai")
-        print(zaidimo_eiga)
-        zaidimo_eiga = []
-    return zaidimo_eiga
+    patikra_x = [0]
+    patikra_o = [0]
+    for n in laime:
+        for m in n:
+            for x in zaidimo_eiga:
+                if x == m and x % 2 == 0:
+                    patikra_o.append(1)
+                elif x == m:
+                    patikra_x.append(1)
+        if len(patikra_x) == 4:
+            ekranas()
+            print("laimejo X")
+            return iseiti()
+        elif len(patikra_o) == 4:
+            ekranas()
+            print("laimejo O")
+            return iseiti()
+        else:
+            patikra_x = [0]
+            patikra_o = [0]
+
 
 while True:
     ejimas = ciklas()
     render_update(ejimas)
     zaidimo_eiga.append(ejimas)
     vaizdas = vaizdavimas()
+    patikra(zaidimo_eiga)
     print(zaidimo_eiga)
-    print(vaizdas[0])
-    print(vaizdas[1])
-    print(vaizdas[2])
+    ekranas()
+    # print(vaizdas[0])
+    # print(vaizdas[1])
+    # print(vaizdas[2])
     print(render)
-    # while True:
-    #     if len(zaidimo_eiga) > 4:
-    #         zaidimo_eiga = patikra(zaidimo_eiga)
-    #         print("reset",zaidimo_eiga)
-    #     break
+
 
