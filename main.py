@@ -68,7 +68,9 @@ zaidimo_eiga = []
 
 def iseiti():
     print("Pabaiga")
-    time.sleep(5)
+    for s in range(5):
+        print(f"Užsidarys: {5-s}")
+        time.sleep(1)
     sys.exit()
 
 def klavisas():
@@ -102,11 +104,12 @@ def ciklas():
     ejimas = klavisas()
     if ejimas in zaidimo_eiga:
         print(f"klaida - {klavisas_revers(ejimas)}-langelis panaudotas ")
-        if len(zaidimo_eiga) % 2 != 0:
-            print("O -pralaimėjo")
-        else:
-            print("X -pralaimėjo")
-        iseiti()
+        klavisas()
+        # if len(zaidimo_eiga) % 2 != 0:
+        #     print("O -pralaimėjo")
+        # else:
+        #     print("X -pralaimėjo")
+        # iseiti()
     os.system('cls')
     return ejimas
 
