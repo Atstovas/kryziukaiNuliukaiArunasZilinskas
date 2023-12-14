@@ -1,5 +1,6 @@
 # Kryžiukų ir nuliukų žaidimas
 """
+0) pagal tinkliuką paskaičiuoja laimę
 1) tinkliukas - list masyvo su paspaustu skaičiumi -funkcija zaidejo interakcijai
 2) seka - kito ėjimo metu priskirti kitą simbolį X arba O
 3) zaidimo eiga - sąrašas kur saugomi ėjimai
@@ -8,8 +9,57 @@
 """
 import sys
 
+"GRID 3x3"
+tinkliukas = int(input("įvesk skaičių, kuris atspindės stulpelius ir eilutes pvz 3: "))
+print(f"Tinkliukas: {tinkliukas} x {tinkliukas}")
+laime = []
+listas = list(range(tinkliukas*tinkliukas))   #[0,1,2,3,4,5,6,7,8]
+eilute = []
+stulp = []
+stulp_n = []
+istrizaines = []
+istr = []
+
+#eilutes [0,1,2],[3,4,5],[6,7,8]
+for i in listas:
+    if i % tinkliukas == 0:
+        j = i + tinkliukas
+        eilute.append(listas[i:j])
+        laime.append(listas[i:j])
+
+#stulpeliai [0,3,6],[1,4,7],[2,5,8]
+for x,m in enumerate(eilute):
+    for n in range(0,len(listas),tinkliukas):
+        s = n + x
+        stulp_n.append(s)
+        #print(f"{n}-n; {x}-x; s=n+x {s}, stulp_n={stulp_n}")
+    stulp.append(stulp_n)
+    laime.append(stulp_n)
+    stulp_n = []
+
+#Įstrizaines[0,4,8],[2,4,6]
+for m in range(tinkliukas):
+    for n in eilute[m]:
+        if n in stulp[m]:
+            istr.append(n)
+istrizaines.append(istr)
+laime.append(istr)
+istr = []
+for m in range(tinkliukas):
+    s = (m+1)*-1 # stulpialiu masyvas nuo galo [-1]
+    for n in eilute[m]:
+        if n in stulp[s]:
+            istr.append(n)
+istrizaines.append(istr)
+laime.append(istr)
+print(istrizaines,"istrizaines")
+print(stulp, " stulpeliai")
+print(eilute, " eilutes")
+print(laime), "laimejimu sekos"
+
 render = {0: "-", 1: "-", 2: "-", 3: "-", 4: "-", 5: "-", 6: "-", 7: "-", 8: "-"}
-laime = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
+#laime = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
+
 zaidimo_eiga = []
 
 
@@ -99,6 +149,7 @@ def patikra(zaidimo_eiga):
 
 while True:
     ejimas = ciklas()
+    print("\x1b[2J")
     render_update(ejimas)
     zaidimo_eiga.append(ejimas)
     vaizdas = vaizdavimas()
