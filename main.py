@@ -13,7 +13,7 @@ import sys
 tinkliukas = int(input("įvesk skaičių, kuris atspindės stulpelius ir eilutes pvz 3: "))
 print(f"Tinkliukas: {tinkliukas} x {tinkliukas}")
 laime = []
-listas = list(range(tinkliukas*tinkliukas))   #[0,1,2,3,4,5,6,7,8]
+listas = list(range(tinkliukas*tinkliukas))   #[0,1,2,3,4,5,6,7,8...]
 eilute = []
 stulp = []
 stulp_n = []
@@ -55,7 +55,7 @@ laime.append(istr)
 print(istrizaines,"istrizaines")
 print(stulp, " stulpeliai")
 print(eilute, " eilutes")
-print(laime), "laimejimu sekos"
+print(laime, "laimejimu sekos")
 
 render = {0: "-", 1: "-", 2: "-", 3: "-", 4: "-", 5: "-", 6: "-", 7: "-", 8: "-"}
 #laime = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
@@ -73,7 +73,11 @@ def klavisas(key):
     skaiciu_isdestymas = {"7": 0, "8": 1, "9": 2, "4": 3, "5": 4, "6": 5, "1": 6, "2": 7, "3": 8}
     return skaiciu_isdestymas[key]
 
+def klavisas_revers(key):
+    skaiciu_isdestymas = {"7": 0, "8": 1, "9": 2, "4": 3, "5": 4, "6": 5, "1": 6, "2": 7, "3": 8}
+    return list(skaiciu_isdestymas.keys())[key]
 
+klavisas_revers(8)
 def render_update(ejimas):
     if len(zaidimo_eiga) % 2 != 0:
         return render.update({ejimas: "O"})
@@ -82,7 +86,18 @@ def render_update(ejimas):
 
 
 def ciklas():
-    ejimas = klavisas(input("ėjimas: "))
+    if len(zaidimo_eiga) % 2 == 0:
+        zaidejas = "X"
+    else:
+        zaidejas = "O"
+    ejimas = klavisas(input(f"{zaidejas} ėjimas: "))
+    if ejimas in zaidimo_eiga:
+        print(f"klaida - {klavisas_revers(ejimas)}-langelis panaudotas ")
+        if len(zaidimo_eiga) % 2 != 0:
+            print("O -pralaimėjo")
+        else:
+            print("X -pralaimėjo")
+        iseiti()
     return ejimas
 
 
@@ -91,7 +106,7 @@ def vaizdavimas():
     eilute2 = []
     eilute3 = []
     for x, n in enumerate(render):
-        if x > 5:
+        if x > 5: # 6,7,8 - duomenys atvaizdavimui apatinės eilutės
             if n == ejimas:
                 if len(zaidimo_eiga) % 2 == 0:
                     eilute3.append("O")
@@ -99,7 +114,7 @@ def vaizdavimas():
                     eilute3.append("X")
             else:
                 eilute3.append(render[n])
-        elif x > 2:
+        elif x > 2:  # 5,4,3 - duomenys atvaizdavimui vidurinės eilutės
             if n == ejimas:
                 if len(zaidimo_eiga) % 2 == 0:
                     eilute2.append("O")
@@ -107,7 +122,7 @@ def vaizdavimas():
                     eilute2.append("X")
             else:
                 eilute2.append(render[n])
-        elif x >= 0:
+        elif x >= 0: # 0,1,2 - duomenys atvaizdavimui viršutinės eilutės
             if n == ejimas:
                 if len(zaidimo_eiga) % 2 == 0:
                     eilute1.append("O")
@@ -117,7 +132,7 @@ def vaizdavimas():
                 eilute1.append(render[n])
     return eilute1, eilute2, eilute3
 
-def ekranas():
+def ekranas(): # spausdina render masyvus [render] per vaizdavimas() funkciją
     for n in range(3):
         print(vaizdas[n])
     # print(vaizdas[0])
@@ -148,9 +163,9 @@ def patikra(zaidimo_eiga):
 
 
 while True:
-    ejimas = ciklas()
+    ejimas = ciklas() #klaviatūros įvestis
     print("\x1b[2J")
-    render_update(ejimas)
+    render_update(ejimas) # kas antrą ėjimą grąžina X arba O
     zaidimo_eiga.append(ejimas)
     vaizdas = vaizdavimas()
     patikra(zaidimo_eiga)
