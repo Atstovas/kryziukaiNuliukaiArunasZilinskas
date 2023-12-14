@@ -71,11 +71,21 @@ def iseiti():
     time.sleep(5)
     sys.exit()
 
-def klavisas(key):
-    if int(key) < 1 or int(key) > 9:
-        iseiti()
+def klavisas():
     skaiciu_isdestymas = {"7": 0, "8": 1, "9": 2, "4": 3, "5": 4, "6": 5, "1": 6, "2": 7, "3": 8}
-    return skaiciu_isdestymas[key]
+    if len(zaidimo_eiga) % 2 == 0:
+        zaidejas = "X"
+    else:
+        zaidejas = "O"
+    while True:
+        try:
+            ejimas = input(f"{zaidejas} ėjimas: ")
+            skaiciu_isdestymas[ejimas]
+            break
+        except KeyError:
+            print("pakartok 1-9 intervale")
+            continue
+    return skaiciu_isdestymas[ejimas]
 
 def klavisas_revers(key):
     skaiciu_isdestymas = {"7": 0, "8": 1, "9": 2, "4": 3, "5": 4, "6": 5, "1": 6, "2": 7, "3": 8}
@@ -89,12 +99,7 @@ def render_update(ejimas):
 
 
 def ciklas():
-
-    if len(zaidimo_eiga) % 2 == 0:
-        zaidejas = "X"
-    else:
-        zaidejas = "O"
-    ejimas = klavisas(input(f"{zaidejas} ėjimas: "))
+    ejimas = klavisas()
     if ejimas in zaidimo_eiga:
         print(f"klaida - {klavisas_revers(ejimas)}-langelis panaudotas ")
         if len(zaidimo_eiga) % 2 != 0:
