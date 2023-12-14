@@ -145,7 +145,8 @@ def vaizdavimas():
 def ekranas(): # spausdina render masyvus [render] per vaizdavimas() funkciją
     for n in range(3):
         print(vaizdas[n][0],"|",vaizdas[n][1],"|",vaizdas[n][2])
-        print("---------")
+        if n != 2:
+            print("---------")
     # print(vaizdas[0])
     # print(vaizdas[1])
     # print(vaizdas[2])
@@ -172,9 +173,10 @@ def patikra(zaidimo_eiga):
             patikra_x = [0]
             patikra_o = [0]
 
-for n in range(3): # pirminis tinkliuko atvaizdavimas
+for n in range(3): # pirminis tinkliuko atvaizdavimas (vienkartinis)
     print(" ","|"," ","|"," ")
-    print("---------")
+    if n != 2:
+        print("---------")
 while True:
     ejimas = ciklas() #klaviatūros įvestis
     render_update(ejimas) # kas antrą ėjimą grąžina X arba O
