@@ -8,10 +8,13 @@
 4) new_render - naujo ėjimo atvaizdavimas
 """
 import sys
+import os
+import time
 
 "GRID 3x3"
-tinkliukas = int(input("įvesk skaičių, kuris atspindės stulpelius ir eilutes pvz 3: "))
-print(f"Tinkliukas: {tinkliukas} x {tinkliukas}")
+tinkliukas = 3
+# tinkliukas = int(input("įvesk skaičių, kuris atspindės stulpelius ir eilutes pvz 3: "))
+# print(f"Tinkliukas: {tinkliukas} x {tinkliukas}")
 laime = []
 listas = list(range(tinkliukas*tinkliukas))   #[0,1,2,3,4,5,6,7,8...]
 eilute = []
@@ -52,12 +55,12 @@ for m in range(tinkliukas):
             istr.append(n)
 istrizaines.append(istr)
 laime.append(istr)
-print(istrizaines,"istrizaines")
-print(stulp, " stulpeliai")
-print(eilute, " eilutes")
-print(laime, "laimejimu sekos")
+# print(istrizaines,"istrizaines")
+# print(stulp, " stulpeliai")
+# print(eilute, " eilutes")
+# print(laime, "laimejimu sekos")
 
-render = {0: "-", 1: "-", 2: "-", 3: "-", 4: "-", 5: "-", 6: "-", 7: "-", 8: "-"}
+render = {0: " ", 1: " ", 2: " ", 3: " ", 4: " ", 5: " ", 6: " ", 7: " ", 8: " "}
 #laime = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
 
 zaidimo_eiga = []
@@ -65,6 +68,7 @@ zaidimo_eiga = []
 
 def iseiti():
     print("Pabaiga")
+    time.sleep(5)
     sys.exit()
 
 def klavisas(key):
@@ -77,7 +81,6 @@ def klavisas_revers(key):
     skaiciu_isdestymas = {"7": 0, "8": 1, "9": 2, "4": 3, "5": 4, "6": 5, "1": 6, "2": 7, "3": 8}
     return list(skaiciu_isdestymas.keys())[key]
 
-klavisas_revers(8)
 def render_update(ejimas):
     if len(zaidimo_eiga) % 2 != 0:
         return render.update({ejimas: "O"})
@@ -86,6 +89,7 @@ def render_update(ejimas):
 
 
 def ciklas():
+
     if len(zaidimo_eiga) % 2 == 0:
         zaidejas = "X"
     else:
@@ -98,6 +102,7 @@ def ciklas():
         else:
             print("X -pralaimėjo")
         iseiti()
+    os.system('cls')
     return ejimas
 
 
@@ -134,7 +139,8 @@ def vaizdavimas():
 
 def ekranas(): # spausdina render masyvus [render] per vaizdavimas() funkciją
     for n in range(3):
-        print(vaizdas[n])
+        print(vaizdas[n][0],"|",vaizdas[n][1],"|",vaizdas[n][2])
+        print("---------")
     # print(vaizdas[0])
     # print(vaizdas[1])
     # print(vaizdas[2])
@@ -161,21 +167,20 @@ def patikra(zaidimo_eiga):
             patikra_x = [0]
             patikra_o = [0]
 
-
+for n in range(3): # pirminis tinkliuko atvaizdavimas
+    print(" ","|"," ","|"," ")
+    print("---------")
 while True:
     ejimas = ciklas() #klaviatūros įvestis
-    print("\x1b[2J")
     render_update(ejimas) # kas antrą ėjimą grąžina X arba O
     zaidimo_eiga.append(ejimas)
     vaizdas = vaizdavimas()
     patikra(zaidimo_eiga)
-    print(zaidimo_eiga)
+    # print(zaidimo_eiga)
     ekranas()
     if len(zaidimo_eiga) == 9:
+        print("lygiosios")
         iseiti()
-    # print(vaizdas[0])
-    # print(vaizdas[1])
-    # print(vaizdas[2])
-    print(render)
+    # print(render)
 
 
