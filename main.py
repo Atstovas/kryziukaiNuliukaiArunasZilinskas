@@ -1,60 +1,71 @@
 # Kryžiukų ir nuliukų žaidimas
-"""
-0) pagal tinkliuką paskaičiuoja laimę
-1) tinkliukas - list masyvo su paspaustu skaičiumi -funkcija zaidejo interakcijai
-2) seka - kito ėjimo metu priskirti kitą simbolį X arba O
-3) zaidimo eiga - sąrašas kur saugomi ėjimai
-4) render - zaidimo atvaizdavimas
-4) new_render - naujo ėjimo atvaizdavimas
-"""
 import sys
 import os
 import time
 
 "GRID 3x3"
-tinkliukas = 3
+tinkliukas = 3 #by default
 # tinkliukas = int(input("įvesk skaičių, kuris atspindės stulpelius ir eilutes pvz 3: "))
 # print(f"Tinkliukas: {tinkliukas} x {tinkliukas}")
-laime = []
+laime = [] # sugeneruojamos eilės tvarka eilutės, stulpeliai, įstrižainės
 listas = list(range(tinkliukas*tinkliukas))   #[0,1,2,3,4,5,6,7,8...]
-eilute = []
-stulp = []
-stulp_n = []
-istrizaines = []
-istr = []
+eilute = [] # sugeneruotos eilutės liste, kurios patalpintos liste [[]]
+stulp = [] # sugeneruotos stulpeliai liste, kurie patalpinti liste [[]]
+stulp_n = [] # vienas atskiras stulpelis kuris bus patalpintas į stulp = []
+istrizaines = [] # įstrižainės
+istr = [] # kiekviena atskira įstrižainė, kuri talpinama į istrizaines = []
 
 #eilutes [0,1,2],[3,4,5],[6,7,8]
-for i in listas:
-    if i % tinkliukas == 0:
-        j = i + tinkliukas
-        eilute.append(listas[i:j])
-        laime.append(listas[i:j])
-
+for i in listas: #[0,1,2,3,4,5,6,7,8...] # Tinkliukas = 3
+    if i % tinkliukas == 0: # jeigu 0 / 3 == 0; ... ; jeigu 3 / 3 == 0; ... ; jeigu 6 / 3 == 0.
+        j = i + tinkliukas # j=0+3 =>3; j=3+3 =>6; j=6+3 =>9;
+        eilute.append(listas[i:j]) # Slices:#[0,1,2,3,4,5,6,7,8] => 0:3; 3:6; 6:9 rez:[0,1,2],[3,4,5],[6,7,8]
+        laime.append(listas[i:j]) # sumuoja visas riekutes į laime[[0:3],[3:6],[6:9]]
+        # laime = [[eilute0],[eilute1],[eilute2]]
 #stulpeliai [0,3,6],[1,4,7],[2,5,8]
-for x,m in enumerate(eilute):
-    for n in range(0,len(listas),tinkliukas):
-        s = n + x
-        stulp_n.append(s)
-        #print(f"{n}-n; {x}-x; s=n+x {s}, stulp_n={stulp_n}")
-    stulp.append(stulp_n)
-    laime.append(stulp_n)
-    stulp_n = []
-
-#Įstrizaines[0,4,8],[2,4,6]
-for m in range(tinkliukas):
-    for n in eilute[m]:
-        if n in stulp[m]:
-            istr.append(n)
-istrizaines.append(istr)
+'''naudojamas eiučių skaičius kaip atskaitos taškas stulpeliams generuoti, bet pereita prie "tinkliukas" kintamojo
+(supaprastinta for x,m in enumerate(eilutes) => nereikia "x" reikšmės "s" skaičiavimui ir enumerate funkcijos)'''
+for m in range(tinkliukas): # 0,1,2 [išmokau enumerate'tinti ir per dažnai naudojau, ten kur nereikia]
+    for n in range(0,len(listas),tinkliukas): #Range(0,9,3) nuo 0 iki 9 per žingsnį 3 [step 3]
+        # print(m,n)
+        s = m + n #["0",1,2,"3",4,5,"6",7,8] =>step3 ima nuo 1 kas trečią "n";
+        # [s=0+0 =>0; s=0+3 =>3; s=0+6 =>6],[s=1+0 =>1; s=1+3 =>4; s=1+6=>7]...[]
+        stulp_n.append(s) # [s] deda į listą n=0 [s] => n=3[s,s] => n=6[s,s,s]
+        #print(f"{n}-n; {m}-x; s=n+x {s}, stulp_n={stulp_n}")
+    stulp.append(stulp_n) # sudeda [s,s,s] [0,3,6].. kad gautume atskira stulpelių sąrašą (nereikalingas žingsnis)
+    laime.append(stulp_n) # sudeda [s,s,s] į [laime]
+    stulp_n = [] #nunulina eilučių sąrašą, kad galėtume formuoti kitas eilutes
+    # laime = [[eilute0],[eilute1],[eilute2],[stulp0],[stulp1],[stulp2]]
+#Įstrizaine[0,4,8] - manau galima optimizuoti, nes stulpelio ir eilutės susikirtimo reikšmių 'indeksai' vienodi.
+#Ieškomas eilutės ir stulpelio susikirtimo taškas stulpeliai:['0',3,6],[1,'4',7],[2,5,'8']
+for m in range(tinkliukas):# m = 0,1,2 in range(3)( eilutes: ['0',1,2],[3,'4',5],[6,7,'8'])
+    for n in eilute[m]: #galimai galima apsiriboti vienu ciklu, nes n = 0,1,2,3,4,5,6,7,8
+        #print(m,n)
+        # for 0 in eilute[0] =>iš [0,1,2] ištraukiam 0 ir "if'as" suranda stulp[0] skaiciu 0
+        # for 1 in eilute[0] =>iš [0,1,2] ištraukiam 1 ir "if'as" - neranda sekoje stulp[0] => [0,3,6]
+        # for 2 in eilute[0] =>iš [0,1,2] ištraukiam 2 ir "if'as" - neranda sekoje stulp[0] => [0,3,6]
+        # for 3 in eilute[1] =>iš [3,4,5] ištraukiam 3 ir "if'as" - neranda sekoje stulp[1] => [1,4,7]
+        # for 4 in eilute[1] =>iš [3,4,5] ištraukiam 4 ir "if'as" suranda stulp[1] skaiciu 4
+        # for 5 in eilute[1] =>iš [3,4,5] ištraukiam 5 ir "if'as" - neranda sekoje stulp[1] => [1,4,7]
+        # for 6 in eilute[2] =>iš [6,7,8] ištraukiam 6 ir "if'as" - neranda sekoje stulp[2] => [2,5,8]
+        # for 7 in eilute[2] =>iš [6,7,8] ištraukiam 7 ir "if'as" - neranda sekoje stulp[2] => [2,5,8]
+        # for 8 in eilute[2] =>iš [6,7,8] ištraukiam 8 ir "if'as" suranda stulp[2] skaiciu 8
+        if n in stulp[m]: # ieškomas eilutės[0]= [0,1,2] ir stulpelio[0]= [0,3,6] susikirtimo taškas
+            istr.append(n) #surastas reikšmes dedam į laikiną listą, kurį nunulinsim ir naudosim kitai įstrižainei
+istrizaines.append(istr) #Įstrizaine[0,4,8]
 laime.append(istr)
+# laime = [[eilute0],[eilute1],[eilute2],[stulp0],[stulp1],[stulp2],[įstriž1]]
 istr = []
+#Įstrizaine [2,4,6] viskas kaip su pirma įstrižaine tik pridėtas s - kintamasis
+#Veidrodinis variantas, kuris įgyvendintas su s-kintamuoju
 for m in range(tinkliukas):
-    s = (m+1)*-1 # stulpialiu masyvas nuo galo [-1]
+    s = (m+1)*-1 # stulpeliu masyvas nuo galo [-1]
     for n in eilute[m]:
         if n in stulp[s]:
             istr.append(n)
 istrizaines.append(istr)
 laime.append(istr)
+# laime = [[eilute0],[eilute1],[eilute2],[stulp0],[stulp1],[stulp2],[įstriž0],[įstriž1]]
 # print(istrizaines,"istrizaines")
 # print(stulp, " stulpeliai")
 # print(eilute, " eilutes")
@@ -82,7 +93,9 @@ def klavisas():
     while True:
         try:
             ejimas = input(f"{zaidejas} ėjimas: ")
-            skaiciu_isdestymas[ejimas]
+            x = skaiciu_isdestymas[ejimas]
+            if render[x] == "X" or render[x] == "O":
+                continue
             break
         except KeyError:
             print("pakartok 1-9 intervale")
@@ -104,12 +117,11 @@ def ciklas():
     ejimas = klavisas()
     if ejimas in zaidimo_eiga:
         print(f"klaida - {klavisas_revers(ejimas)}-langelis panaudotas ")
-        klavisas()
-        # if len(zaidimo_eiga) % 2 != 0:
-        #     print("O -pralaimėjo")
-        # else:
-        #     print("X -pralaimėjo")
-        # iseiti()
+        if len(zaidimo_eiga) % 2 != 0:
+            print("O -pralaimėjo")
+        else:
+            print("X -pralaimėjo")
+        iseiti()
     os.system('cls')
     return ejimas
 
@@ -176,14 +188,18 @@ def patikra(zaidimo_eiga):
             patikra_x = [0]
             patikra_o = [0]
 
-for n in range(3): # pirminis tinkliuko atvaizdavimas (vienkartinis)
-    print(" ","|"," ","|"," ")
-    if n != 2:
-        print("---------")
+def pirminis():
+    for n in range(3): # pirminis tinkliuko atvaizdavimas (vienkartinis)
+        print(" ","|"," ","|"," ")
+        if n != 2:
+            print("---------")
+pirminis()
 while True:
     ejimas = ciklas() #klaviatūros įvestis
     render_update(ejimas) # kas antrą ėjimą grąžina X arba O
     zaidimo_eiga.append(ejimas)
+    a = render
+    b = zaidimo_eiga
     vaizdas = vaizdavimas()
     patikra(zaidimo_eiga)
     # print(zaidimo_eiga)
