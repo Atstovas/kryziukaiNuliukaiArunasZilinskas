@@ -73,16 +73,40 @@ laime.append(istr)
 
 render = {0: " ", 1: " ", 2: " ", 3: " ", 4: " ", 5: " ", 6: " ", 7: " ", 8: " "}
 #laime = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
-
+suvestine = []
 zaidimo_eiga = []
+def valyti():
+    global render, zaidimo_eiga, vaizdas
+    render = {0: " ", 1: " ", 2: " ", 3: " ", 4: " ", 5: " ", 6: " ", 7: " ", 8: " "}
+    zaidimo_eiga = []
+    vaizdas = [' ', ' ', ' '],[' ', ' ', ' '],[' ', ' ', ' ']
+    os.system('cls')
 
-
-def iseiti():
-    print("Pabaiga")
-    for s in range(5):
-        print(f"Užsidarys: {5-s}")
-        time.sleep(1)
-    sys.exit()
+def iseiti(laimetojas=""):
+    # print("Pabaiga")
+    if laimetojas != "":
+        suvestine.append(laimetojas)
+    while True:
+        try:
+            meniu = int(input("Žaisti dviems     = 1\n"
+                          "Sesijos suvestinė = 2\n"
+                          "Išeiti            = 3\n"
+                          "Žaisti prieš PC   = 4\n"))
+            if meniu not in range(1,5):
+                continue
+            break
+        except:
+            print("Išimtis")
+    match meniu:
+        case 1:
+            valyti() #kartoti
+        case 2:
+            print(suvestine) #suvestinė
+            iseiti()
+        case 3:
+            sys.exit() #Exit
+        case 4:
+            sys.exit() #Žaisti prieš PC
 
 def klavisas():
     skaiciu_isdestymas = {"7": 0, "8": 1, "9": 2, "4": 3, "5": 4, "6": 5, "1": 6, "2": 7, "3": 8}
@@ -179,11 +203,11 @@ def patikra(zaidimo_eiga):
         if len(patikra_x) == 4:
             ekranas()
             print("laimejo X")
-            return iseiti()
+            return iseiti("X")
         elif len(patikra_o) == 4:
             ekranas()
             print("laimejo O")
-            return iseiti()
+            return iseiti("O")
         else:
             patikra_x = [0]
             patikra_o = [0]
@@ -193,6 +217,7 @@ def pirminis():
         print(" ","|"," ","|"," ")
         if n != 2:
             print("---------")
+iseiti()
 pirminis()
 while True:
     ejimas = ciklas() #klaviatūros įvestis
