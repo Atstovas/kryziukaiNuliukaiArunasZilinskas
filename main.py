@@ -101,7 +101,22 @@ def iseiti(laimetojas=""):
         case 1:
             valyti() #kartoti
         case 2:
-            print(suvestine) #suvestinė
+            #suvestinė
+            sarasas = ""
+            x = []
+            o = []
+            lyguma = []
+            for win in suvestine:
+                sarasas = sarasas +" "+str(win)
+                if win == "=":
+                    lyguma.append(win)
+                elif win == "X":
+                    x.append(win)
+                elif win == "O":
+                    o.append("O")
+            print("Žaidimo eiga:",sarasas)
+            print(f"X laimėjo {len(x)} kart, O laimėjo {len(o)} kart, {len(lyguma)}-lygu")
+            print("----------------------")
             iseiti()
         case 3:
             sys.exit() #Exit
@@ -231,7 +246,7 @@ while True:
     ekranas()
     if len(zaidimo_eiga) == 9:
         print("lygiosios")
-        iseiti()
+        iseiti("=")
     # print(render)
 
 
