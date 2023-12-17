@@ -1,6 +1,6 @@
-#Platesnis aprašymas Wiki skiltyje.
+Platesnis aprašymas [Wiki](https://github.com/Atstovas/kryziukaiNuliukaiArunasZilinskas/wiki) skiltyje.
 
-__Iliustracijos__ generuotos su Python Pillow
+__Iliustracijos generuotos su Python Pillow__
 
 
 
