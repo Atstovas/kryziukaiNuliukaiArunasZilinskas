@@ -71,8 +71,12 @@ laime.append(istr)
 # print(eilute, " eilutes")
 # print(laime, "laimejimu sekos")
 
+skaiciu_isdestymas = {"7": 0, "8": 1, "9": 2, "4": 3, "5": 4, "6": 5, "1": 6, "2": 7, "3": 8}
 render = {0: " ", 1: " ", 2: " ", 3: " ", 4: " ", 5: " ", 6: " ", 7: " ", 8: " "}
+
 #laime = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
+
+
 suvestine = []
 zaidimo_eiga = []
 def valyti():
@@ -114,8 +118,10 @@ def iseiti(laimetojas=""):
                     x.append(win)
                 elif win == "O":
                     o.append("O")
-            print("Žaidimo eiga:",sarasas)
-            print(f"X laimėjo {len(x)} kart, O laimėjo {len(o)} kart, {len(lyguma)}-lygu")
+            print("Žaidimo sesijos rezultatų seka :",sarasas)
+            print(f"X laimėjo {len(x)}-kart")
+            print(f'O laimėjo {len(o)}-kart')
+            print(f'{len(lyguma)}-kart lygiosiomis')
             print("----------------------")
             iseiti()
         case 3:
@@ -124,7 +130,7 @@ def iseiti(laimetojas=""):
             sys.exit() #Žaisti prieš PC
 
 def klavisas():
-    skaiciu_isdestymas = {"7": 0, "8": 1, "9": 2, "4": 3, "5": 4, "6": 5, "1": 6, "2": 7, "3": 8}
+    # skaiciu_isdestymas = {"7": 0, "8": 1, "9": 2, "4": 3, "5": 4, "6": 5, "1": 6, "2": 7, "3": 8}
     if len(zaidimo_eiga) % 2 == 0:
         zaidejas = "X"
     else:
@@ -142,7 +148,7 @@ def klavisas():
     return skaiciu_isdestymas[ejimas]
 
 def klavisas_revers(key):
-    skaiciu_isdestymas = {"7": 0, "8": 1, "9": 2, "4": 3, "5": 4, "6": 5, "1": 6, "2": 7, "3": 8}
+    # skaiciu_isdestymas = {"7": 0, "8": 1, "9": 2, "4": 3, "5": 4, "6": 5, "1": 6, "2": 7, "3": 8}
     return list(skaiciu_isdestymas.keys())[key]
 
 def render_update(ejimas):
@@ -238,12 +244,12 @@ while True:
     ejimas = ciklas() #klaviatūros įvestis
     render_update(ejimas) # kas antrą ėjimą grąžina X arba O
     zaidimo_eiga.append(ejimas)
-    a = render
-    b = zaidimo_eiga
-    vaizdas = vaizdavimas()
+    a = render # 9 langeliai neUNIVERSALU
+    b = zaidimo_eiga # pradžioje tuščias masyvas
+    vaizdas = vaizdavimas() #spausdina tris eilutes neUNIVERSALU
     patikra(zaidimo_eiga)
     # print(zaidimo_eiga)
-    ekranas()
+    ekranas() #neUNIVERSALU
     if len(zaidimo_eiga) == 9:
         print("lygiosios")
         iseiti("=")
