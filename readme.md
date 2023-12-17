@@ -1,3 +1,9 @@
+Platesnis aprašymas Wiki skiltyje.
+
+Iliustracijos generuotos su Python Pillow
+
+
+
 „Kryžiukai-nuliukai“ – dviem žaidėjams skirtas žaidimas.
 
 Sukurti kryžiukų/nuliukų žaidimą, kuris:
