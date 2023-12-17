@@ -1,6 +1,6 @@
-Platesnis aprašymas Wiki skiltyje.
+#Platesnis aprašymas Wiki skiltyje.
 
-Iliustracijos generuotos su Python Pillow
+__Iliustracijos__ generuotos su Python Pillow
 
 
 
