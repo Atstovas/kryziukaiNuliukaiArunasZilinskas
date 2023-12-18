@@ -1,7 +1,7 @@
 # Kryžiukų ir nuliukų žaidimas
 import sys
 import os
-import time
+import random
 
 "GRID 3x3"
 tinkliukas = 3 #by default
@@ -79,6 +79,25 @@ render = {0: " ", 1: " ", 2: " ", 3: " ", 4: " ", 5: " ", 6: " ", 7: " ", 8: " "
 
 suvestine = []
 zaidimo_eiga = []
+bot = False
+
+def botas():
+    x = random.randrange(9)
+    if len(zaidimo_eiga) == 1:
+        if render[4] == "X":
+            ejimas = "7"
+            return skaiciu_isdestymas[ejimas]
+    if render[4] == " ":
+        ejimas = "5"
+        return skaiciu_isdestymas[ejimas]
+    for r in range(6):
+        if render[x] == " ":
+            return skaiciu_isdestymas[klavisas_revers(x)]
+    for n in render:
+        if render[n] == " ":
+            #return skaiciu_isdestymas[list(skaiciu_isdestymas.keys())[n]]
+            return skaiciu_isdestymas[klavisas_revers(n)]
+
 def valyti():
     global render, zaidimo_eiga, vaizdas
     render = {0: " ", 1: " ", 2: " ", 3: " ", 4: " ", 5: " ", 6: " ", 7: " ", 8: " "}
@@ -88,6 +107,7 @@ def valyti():
 
 def iseiti(laimetojas=""):
     # print("Pabaiga")
+    global bot
     if laimetojas != "":
         suvestine.append(laimetojas)
     while True:
@@ -103,6 +123,7 @@ def iseiti(laimetojas=""):
             print("Išimtis")
     match meniu:
         case 1:
+            bot = False
             valyti() #kartoti
         case 2:
             #suvestinė
@@ -127,18 +148,23 @@ def iseiti(laimetojas=""):
         case 3:
             sys.exit() #Exit
         case 4:
-            sys.exit() #Žaisti prieš PC
+            bot = True
+            valyti() #Žaisti prieš PC (bot == True)
 
 def klavisas():
     # skaiciu_isdestymas = {"7": 0, "8": 1, "9": 2, "4": 3, "5": 4, "6": 5, "1": 6, "2": 7, "3": 8}
     if len(zaidimo_eiga) % 2 == 0:
         zaidejas = "X"
     else:
-        zaidejas = "O"
+        if bot == True:
+            return botas()
+        else:
+            zaidejas = "O"
     while True:
         try:
             ejimas = input(f"{zaidejas} ėjimas: ")
             x = skaiciu_isdestymas[ejimas]
+            # print(bot,"while viduje")
             if render[x] == "X" or render[x] == "O":
                 continue
             break
